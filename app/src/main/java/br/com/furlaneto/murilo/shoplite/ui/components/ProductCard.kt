@@ -1,6 +1,10 @@
 package br.com.furlaneto.murilo.shoplite.ui.components
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -12,22 +16,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.furlaneto.murilo.shoplite.domain.entity.Product
 import coil3.compose.AsyncImage
 import java.util.Locale
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun ProductCard(
-    name: String,
-    category: String,
-    price: Double,
-    imageUrl: String,
-    modifier: Modifier = Modifier
+fun SharedTransitionScope.ProductCard(
+    product: Product,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = modifier.width(180.dp),
+        modifier = modifier
+            .width(180.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -45,9 +51,14 @@ fun ProductCard(
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    model = imageUrl,
-                    contentDescription = name,
-                    modifier = Modifier.fillMaxSize(0.8f),
+                    model = product.image,
+                    contentDescription = product.title,
+                    modifier = Modifier
+                        .sharedElement(
+                            sharedContentState = rememberSharedContentState(key = "image-${product.id}"),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
+                        .fillMaxSize(0.8f),
                     contentScale = ContentScale.Fit
                 )
             }
@@ -57,7 +68,7 @@ fun ProductCard(
                 color = Color(0xFFE8EAF6)
             ) {
                 Text(
-                    text = category.uppercase(),
+                    text = product.category.uppercase(),
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
@@ -66,7 +77,7 @@ fun ProductCard(
             }
 
             Text(
-                text = name,
+                text = product.title,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color(0xFF333333),
@@ -75,8 +86,8 @@ fun ProductCard(
                 modifier = Modifier.heightIn(min = 40.dp)
             )
 
-            val formattedPrice = remember(price) {
-                String.format(Locale("pt", "BR"), "R$ %.2f", price)
+            val formattedPrice = remember(product.price) {
+                String.format(Locale("pt", "BR"), "R$ %.2f", product.price)
             }
             
             Text(
@@ -87,15 +98,4 @@ fun ProductCard(
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProductCardPreview() {
-    ProductCard(
-        name = "Tênis Speed Pro Max Carbon",
-        category = "Esportes",
-        price = 859.90,
-        imageUrl = ""
-    )
 }

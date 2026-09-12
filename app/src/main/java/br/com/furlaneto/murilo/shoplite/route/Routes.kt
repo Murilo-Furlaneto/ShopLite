@@ -1,23 +1,75 @@
 package br.com.furlaneto.murilo.shoplite.route
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
+import br.com.furlaneto.murilo.shoplite.ui.screen.DetailScreen
 import br.com.furlaneto.murilo.shoplite.ui.screen.HomeScreen
+import br.com.furlaneto.murilo.shoplite.ui.viewmodel.ProductViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun Routes(){
-    val navController = rememberNavController()
+fun Routes() {
+    val backStack = rememberNavBackStack(HomeRoute)
 
-    NavHost(
-        navController = navController,
-        startDestination = AppPages.Home.route
-    ) {
-        composable(route = AppPages.Home.route) {
-            HomeScreen()
-        }
+    SharedTransitionLayout {
+        NavDisplay(
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
+            sharedTransitionScope = this,
+            transitionSpec = {
+                (fadeIn(animationSpec = tween(400)) + slideInHorizontally(
+                    initialOffsetX = { 400 },
+                    animationSpec = tween(400)
+                )) togetherWith (fadeOut(animationSpec = tween(400)) + slideOutHorizontally(
+                    targetOffsetX = { -400 },
+                    animationSpec = tween(400)
+                ))
+            },
+            popTransitionSpec = {
+                (fadeIn(animationSpec = tween(400)) + slideInHorizontally(
+                    initialOffsetX = { -400 },
+                    animationSpec = tween(400)
+                )) togetherWith (fadeOut(animationSpec = tween(400)) + slideOutHorizontally(
+                    targetOffsetX = { 400 },
+                    animationSpec = tween(400)
+                ))
+            },
+            entryProvider = entryProvider {
+                entry<HomeRoute> {
+                    val viewModel: ProductViewModel = hiltViewModel()
+                    HomeScreen(
+                        productViewModel = viewModel,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        onProductClick = { product ->
+                            backStack.add(DetailsRoute(product))
+                        }
+                    )
+                }
 
+                entry<CartRoute> {
+                    // ainda não existe
+                }
 
+                entry<DetailsRoute> { route ->
+                    DetailScreen(
+                        product = route.product,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        onBackClick = { backStack.removeLastOrNull() },
+                        onAddToCartClick = {}
+                    )
+                }
+            }
+        )
     }
 }
