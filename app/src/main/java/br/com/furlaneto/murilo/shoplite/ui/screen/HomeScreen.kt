@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 import br.com.furlaneto.murilo.shoplite.domain.entity.Product
+import br.com.furlaneto.murilo.shoplite.domain.entity.ProductCategory
 import br.com.furlaneto.murilo.shoplite.ui.components.CategoryChips
 import br.com.furlaneto.murilo.shoplite.ui.components.ProductCard
 import br.com.furlaneto.murilo.shoplite.ui.viewmodel.ProductUiState
@@ -59,6 +60,7 @@ fun HomeScreen(
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
         onProductClick = onProductClick,
+        onCategoryClick = { productViewModel.selectCategory(it) },
         onRetryClick = { productViewModel.fetchProducts() }
     )
 }
@@ -70,6 +72,7 @@ fun HomeContent(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope,
     onProductClick: (Product) -> Unit,
+    onCategoryClick: (ProductCategory?) -> Unit,
     onRetryClick: () -> Unit
 ) {
     var search by remember { mutableStateOf("") }
@@ -105,7 +108,14 @@ fun HomeContent(
                 )
             )
 
-            CategoryChips()
+            val selectedCategory = if (uiState is ProductUiState.Success) {
+                uiState.selectedCategory
+            } else null
+
+            CategoryChips(
+                selectedCategory = selectedCategory,
+                onCategoryClick = onCategoryClick
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -117,19 +127,25 @@ fun HomeContent(
                 }
 
                 is ProductUiState.Success -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(8.dp)
-                    ) {
-                        items(uiState.products) { product ->
-                            with(sharedTransitionScope) {
-                                ProductCard(
-                                    product = product,
-                                    animatedVisibilityScope = animatedVisibilityScope,
-                                    modifier = Modifier.padding(8.dp),
-                                    onClick = { onProductClick(product) }
-                                )
+                    if (uiState.products.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(text = "Nenhum produto encontrado nesta categoria.")
+                        }
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(8.dp)
+                        ) {
+                            items(uiState.products) { product ->
+                                with(sharedTransitionScope) {
+                                    ProductCard(
+                                        product = product,
+                                        animatedVisibilityScope = animatedVisibilityScope,
+                                        modifier = Modifier.padding(8.dp),
+                                        onClick = { onProductClick(product) }
+                                    )
+                                }
                             }
                         }
                     }

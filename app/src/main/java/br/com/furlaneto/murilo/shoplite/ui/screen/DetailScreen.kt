@@ -115,7 +115,7 @@ fun DetailScreen(
                     color = AppColors.TagBackground
                 ) {
                     Text(
-                        text = product.category.uppercase(),
+                        text = product.category.toDisplayName().uppercase(),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
