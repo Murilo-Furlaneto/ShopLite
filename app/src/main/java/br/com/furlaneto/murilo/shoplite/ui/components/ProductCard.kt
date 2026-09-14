@@ -13,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -21,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import br.com.furlaneto.murilo.shoplite.domain.entity.Product
 import coil3.compose.AsyncImage
 import java.util.Locale
+
+import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -35,7 +36,7 @@ fun SharedTransitionScope.ProductCard(
             .width(180.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = AppColors.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -47,7 +48,7 @@ fun SharedTransitionScope.ProductCard(
                     .fillMaxWidth()
                     .height(160.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFF2F2F2)),
+                    .background(AppColors.BackgroundImage),
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
@@ -65,14 +66,14 @@ fun SharedTransitionScope.ProductCard(
 
             Surface(
                 shape = RoundedCornerShape(4.dp),
-                color = Color(0xFFE8EAF6)
+                color = AppColors.TagBackground
             ) {
                 Text(
                     text = product.category.uppercase(),
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF5C6BC0)
+                    color = AppColors.TagText
                 )
             }
 
@@ -80,7 +81,7 @@ fun SharedTransitionScope.ProductCard(
                 text = product.title,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF333333),
+                color = AppColors.PrimaryText,
                 maxLines = 2,
                 lineHeight = 20.sp,
                 modifier = Modifier.heightIn(min = 40.dp)
@@ -94,7 +95,7 @@ fun SharedTransitionScope.ProductCard(
                 text = formattedPrice,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF3F51B5)
+                color = AppColors.Primary
             )
         }
     }

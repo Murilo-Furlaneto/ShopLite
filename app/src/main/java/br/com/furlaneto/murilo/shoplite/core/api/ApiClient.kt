@@ -32,7 +32,7 @@ class ApiClient(val baseUrl: String) {
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
-    fun <T> create(service: Class<T>) : T {
+    fun <T> create(service: Class<T>): T {
         return retrofit.create(service)
     }
 }

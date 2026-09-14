@@ -12,16 +12,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+
+import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 
 @Composable
 fun CategoryChips() {
     var selectedCategory by remember { mutableStateOf("Tudo") }
-
-    val selectedColor = Color(0xFF3F51B5)
-    val unselectedLabelColor = Color(0xFF5A647D)
-    val unselectedContainerColor = Color(0xFFF1F1F1)
 
     Row(modifier = Modifier.padding(horizontal = 40.dp, vertical = 8.dp)) {
         listOf("Tudo", "Eletrônicos", "Moda", "Casa").forEach { category ->
@@ -34,10 +31,10 @@ fun CategoryChips() {
                 shape = RoundedCornerShape(50),
                 modifier = Modifier.padding(end = 8.dp),
                 colors = FilterChipDefaults.filterChipColors(
-                    containerColor = unselectedContainerColor,
-                    labelColor = unselectedLabelColor,
-                    selectedContainerColor = selectedColor,
-                    selectedLabelColor = Color.White
+                    containerColor = AppColors.BackgroundLight,
+                    labelColor = AppColors.UnselectedLabel,
+                    selectedContainerColor = AppColors.Primary,
+                    selectedLabelColor = AppColors.White
                 ),
                 border = null
             )

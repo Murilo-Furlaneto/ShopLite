@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 import br.com.furlaneto.murilo.shoplite.domain.entity.Product
 import br.com.furlaneto.murilo.shoplite.ui.components.CategoryChips
 import br.com.furlaneto.murilo.shoplite.ui.components.ProductCard
@@ -98,9 +99,9 @@ fun HomeContent(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
-                    focusedContainerColor = Color(0xFFF1F1F1),
-                    unfocusedContainerColor = Color(0xFFF1F1F1),
-                    disabledContainerColor = Color(0xFFF1F1F1)
+                    focusedContainerColor = AppColors.BackgroundLight,
+                    unfocusedContainerColor = AppColors.BackgroundLight,
+                    disabledContainerColor = AppColors.BackgroundLight
                 )
             )
 
@@ -111,7 +112,7 @@ fun HomeContent(
             when (uiState) {
                 is ProductUiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = Color(0xFF3F51B5))
+                        CircularProgressIndicator(color = AppColors.Primary)
                     }
                 }
 

@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,6 +25,8 @@ import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import br.com.furlaneto.murilo.shoplite.domain.entity.Product
 import coil3.compose.AsyncImage
 import java.util.Locale
+
+import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -62,7 +63,7 @@ fun DetailScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF3F51B5)
+                        containerColor = AppColors.Primary
                     )
                 ) {
                     Icon(Icons.Default.ShoppingCart, contentDescription = null)
@@ -86,7 +87,7 @@ fun DetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
-                    .background(Color(0xFFF2F2F2)),
+                    .background(AppColors.BackgroundImage),
                 contentAlignment = Alignment.Center
             ) {
                 with(sharedTransitionScope) {
@@ -111,14 +112,14 @@ fun DetailScreen(
             ) {
                 Surface(
                     shape = RoundedCornerShape(4.dp),
-                    color = Color(0xFFE8EAF6)
+                    color = AppColors.TagBackground
                 ) {
                     Text(
                         text = product.category.uppercase(),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF5C6BC0)
+                        color = AppColors.TagText
                     )
                 }
 
@@ -128,7 +129,7 @@ fun DetailScreen(
                     text = product.title,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF333333)
+                    color = AppColors.PrimaryText
                 )
 
                 Spacer(Modifier.height(8.dp))
@@ -141,7 +142,7 @@ fun DetailScreen(
                     text = formattedPrice,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xFF3F51B5)
+                    color = AppColors.Primary
                 )
 
                 Spacer(Modifier.height(8.dp))
@@ -152,7 +153,7 @@ fun DetailScreen(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
-                        tint = Color(0xFFFFB300),
+                        tint = AppColors.StarRating,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(Modifier.width(4.dp))
@@ -160,19 +161,19 @@ fun DetailScreen(
                         text = product.rating.rate.toString(),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF333333)
+                        color = AppColors.PrimaryText
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(
                         text = "(${product.rating.count} avaliações)",
                         fontSize = 14.sp,
-                        color = Color(0xFF666666)
+                        color = AppColors.SecondaryText
                     )
                 }
 
                 Spacer(Modifier.height(16.dp))
 
-                HorizontalDivider(color = Color(0xFFEEEEEE), thickness = 1.dp)
+                HorizontalDivider(color = AppColors.Divider, thickness = 1.dp)
 
                 Spacer(Modifier.height(16.dp))
 
@@ -180,7 +181,7 @@ fun DetailScreen(
                     text = "Descrição",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF333333)
+                    color = AppColors.PrimaryText
                 )
 
                 Spacer(Modifier.height(8.dp))
@@ -189,7 +190,7 @@ fun DetailScreen(
                     text = product.description,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    color = Color(0xFF666666)
+                    color = AppColors.SecondaryText
                 )
                 
                 Spacer(Modifier.height(16.dp))
