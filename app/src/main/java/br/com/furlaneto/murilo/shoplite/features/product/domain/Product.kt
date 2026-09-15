@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.domain.entity
+package br.com.furlaneto.murilo.shoplite.features.product.domain
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

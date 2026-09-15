@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.ui.screen
+package br.com.furlaneto.murilo.shoplite.features.product.ui.details
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -17,16 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
-import br.com.furlaneto.murilo.shoplite.domain.entity.Product
+import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
+import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
 import coil3.compose.AsyncImage
 import java.util.Locale
-
-import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable

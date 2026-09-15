@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.ui.components
+package br.com.furlaneto.murilo.shoplite.features.product.ui.components
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
-import br.com.furlaneto.murilo.shoplite.domain.entity.ProductCategory
+import br.com.furlaneto.murilo.shoplite.features.product.domain.ProductCategory
 
 @Composable
 fun CategoryChips(
@@ -29,6 +29,7 @@ fun CategoryChips(
             .horizontalScroll(scrollState)
             .padding(horizontal = 16.dp)
     ) {
+        // Opção "Tudo"
         CategoryChip(
             label = "Tudo",
             isSelected = selectedCategory == null,

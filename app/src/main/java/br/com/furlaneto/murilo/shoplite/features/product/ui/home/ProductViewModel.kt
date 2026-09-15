@@ -1,10 +1,10 @@
-package br.com.furlaneto.murilo.shoplite.ui.viewmodel
+package br.com.furlaneto.murilo.shoplite.features.product.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.furlaneto.murilo.shoplite.data.repository.ProductsRepository
-import br.com.furlaneto.murilo.shoplite.domain.entity.Product
-import br.com.furlaneto.murilo.shoplite.domain.entity.ProductCategory
+import br.com.furlaneto.murilo.shoplite.features.product.data.repository.ProductsRepository
+import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
+import br.com.furlaneto.murilo.shoplite.features.product.domain.ProductCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -34,27 +34,28 @@ class ProductViewModel @Inject constructor(
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     private val _selectedCategory = MutableStateFlow<ProductCategory?>(null)
+    private val _searchQuery = MutableStateFlow("")
     private val _isLoading = MutableStateFlow(false)
     private val _errorMessage = MutableStateFlow<String?>(null)
 
-    val selectedCategory: StateFlow<ProductCategory?> = _selectedCategory.asStateFlow()
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     val uiState: StateFlow<ProductUiState> = combine(
         _products,
         _selectedCategory,
+        _searchQuery,
         _isLoading,
         _errorMessage
-    ) { products, category, isLoading, error ->
+    ) { products, category, query, isLoading, error ->
         when {
             error != null -> ProductUiState.Error(error)
             isLoading -> ProductUiState.Loading
-            products.isEmpty() -> ProductUiState.Initial
+            products.isEmpty() && !isLoading -> ProductUiState.Initial
             else -> {
-                val filteredProducts = if (category == null) {
-                    products
-                } else {
-                    products.filter { it.category == category }
-                }
+                val filteredProducts = products
+                    .filter { if (category == null) true else it.category == category }
+                    .filter { it.title.contains(query, ignoreCase = true) }
+                
                 ProductUiState.Success(filteredProducts, category)
             }
         }
@@ -70,6 +71,10 @@ class ProductViewModel @Inject constructor(
 
     fun selectCategory(category: ProductCategory?) {
         _selectedCategory.value = category
+    }
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
     }
 
     fun fetchProducts() {

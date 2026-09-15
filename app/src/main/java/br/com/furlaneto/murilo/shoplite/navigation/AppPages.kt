@@ -1,13 +1,8 @@
-package br.com.furlaneto.murilo.shoplite.route
+package br.com.furlaneto.murilo.shoplite.navigation
 
-import android.net.Uri
-import android.os.Bundle
-import androidx.navigation.NavType
 import androidx.navigation3.runtime.NavKey
-import br.com.furlaneto.murilo.shoplite.domain.entity.Product
+import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Serializable
 sealed interface AppRoute : NavKey
@@ -25,4 +20,3 @@ object ProfileRoute : AppRoute
 data class DetailsRoute(
     val product: Product
 ) : AppRoute
-

@@ -1,7 +1,7 @@
 package br.com.furlaneto.murilo.shoplite.di
 
 import br.com.furlaneto.murilo.shoplite.core.api.ApiClient
-import br.com.furlaneto.murilo.shoplite.data.service.ApiService
+import br.com.furlaneto.murilo.shoplite.features.product.data.api.ProductApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ object NetWorkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(apiClient: ApiClient): ApiService {
-        return apiClient.create(ApiService::class.java)
+    fun provideProductApi(apiClient: ApiClient): ProductApi {
+        return apiClient.create(ProductApi::class.java)
     }
 }

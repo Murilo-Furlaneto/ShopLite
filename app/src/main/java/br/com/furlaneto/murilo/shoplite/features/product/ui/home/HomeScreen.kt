@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.ui.screen
+package br.com.furlaneto.murilo.shoplite.features.product.ui.home
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -28,9 +28,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,12 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
-import br.com.furlaneto.murilo.shoplite.domain.entity.Product
-import br.com.furlaneto.murilo.shoplite.domain.entity.ProductCategory
-import br.com.furlaneto.murilo.shoplite.ui.components.CategoryChips
-import br.com.furlaneto.murilo.shoplite.ui.components.ProductCard
-import br.com.furlaneto.murilo.shoplite.ui.viewmodel.ProductUiState
-import br.com.furlaneto.murilo.shoplite.ui.viewmodel.ProductViewModel
+import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
+import br.com.furlaneto.murilo.shoplite.features.product.domain.ProductCategory
+import br.com.furlaneto.murilo.shoplite.features.product.ui.components.CategoryChips
+import br.com.furlaneto.murilo.shoplite.features.product.ui.components.ProductCard
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -53,14 +48,17 @@ fun HomeScreen(
     onProductClick: (Product) -> Unit = {}
 ) {
     val uiState by productViewModel.uiState.collectAsState()
+    val searchQuery by productViewModel.searchQuery.collectAsState()
     val animatedVisibilityScope = LocalNavAnimatedContentScope.current
 
     HomeContent(
         uiState = uiState,
+        searchQuery = searchQuery,
         sharedTransitionScope = sharedTransitionScope,
         animatedVisibilityScope = animatedVisibilityScope,
         onProductClick = onProductClick,
         onCategoryClick = { productViewModel.selectCategory(it) },
+        onSearchQueryChange = { productViewModel.onSearchQueryChanged(it) },
         onRetryClick = { productViewModel.fetchProducts() }
     )
 }
@@ -69,14 +67,14 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     uiState: ProductUiState,
+    searchQuery: String,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: androidx.compose.animation.AnimatedVisibilityScope,
     onProductClick: (Product) -> Unit,
     onCategoryClick: (ProductCategory?) -> Unit,
+    onSearchQueryChange: (String) -> Unit,
     onRetryClick: () -> Unit
 ) {
-    var search by remember { mutableStateOf("") }
-
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
@@ -84,8 +82,8 @@ fun HomeContent(
                 .fillMaxSize()
         ) {
             TextField(
-                value = search,
-                onValueChange = { search = it },
+                value = searchQuery,
+                onValueChange = onSearchQueryChange,
                 placeholder = { Text(text = "Buscar produtos...") },
                 leadingIcon = {
                     Icon(
@@ -129,7 +127,7 @@ fun HomeContent(
                 is ProductUiState.Success -> {
                     if (uiState.products.isEmpty()) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text(text = "Nenhum produto encontrado nesta categoria.")
+                            Text(text = "Nenhum produto encontrado.")
                         }
                     } else {
                         LazyVerticalGrid(

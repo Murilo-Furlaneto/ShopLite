@@ -1,7 +1,7 @@
-package br.com.furlaneto.murilo.shoplite.di
+package br.com.furlaneto.murilo.shoplite.features.product.di
 
-import br.com.furlaneto.murilo.shoplite.data.repository.ProductsRepository
-import br.com.furlaneto.murilo.shoplite.data.repository.ProductsRepositoryImpl
+import br.com.furlaneto.murilo.shoplite.features.product.data.repository.ProductsRepository
+import br.com.furlaneto.murilo.shoplite.features.product.data.repository.ProductsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+abstract class ProductModule {
 
     @Binds
     @Singleton

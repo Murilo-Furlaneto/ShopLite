@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.route
+package br.com.furlaneto.murilo.shoplite.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -13,9 +13,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import br.com.furlaneto.murilo.shoplite.ui.screen.DetailScreen
-import br.com.furlaneto.murilo.shoplite.ui.screen.HomeScreen
-import br.com.furlaneto.murilo.shoplite.ui.viewmodel.ProductViewModel
+import br.com.furlaneto.murilo.shoplite.features.product.ui.details.DetailScreen
+import br.com.furlaneto.murilo.shoplite.features.product.ui.home.HomeScreen
+import br.com.furlaneto.murilo.shoplite.features.product.ui.home.ProductViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
