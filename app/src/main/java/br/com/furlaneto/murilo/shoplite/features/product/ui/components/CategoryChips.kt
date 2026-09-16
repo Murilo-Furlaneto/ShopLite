@@ -10,7 +10,9 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import br.com.furlaneto.murilo.shoplite.R
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 import br.com.furlaneto.murilo.shoplite.features.product.domain.ProductCategory
 
@@ -31,14 +33,14 @@ fun CategoryChips(
     ) {
         // Opção "Tudo"
         CategoryChip(
-            label = "Tudo",
+            label = stringResource(R.string.category_all),
             isSelected = selectedCategory == null,
             onClick = { onCategoryClick(null) }
         )
 
         categories.forEach { category ->
             CategoryChip(
-                label = category.toDisplayName(),
+                label = stringResource(category.getDisplayNameResId()),
                 isSelected = selectedCategory == category,
                 onClick = { onCategoryClick(category) }
             )

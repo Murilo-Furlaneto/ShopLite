@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.di
+package br.com.furlaneto.murilo.shoplite.core.di
 
 import br.com.furlaneto.murilo.shoplite.core.api.ApiClient
 import br.com.furlaneto.murilo.shoplite.features.product.data.api.ProductApi

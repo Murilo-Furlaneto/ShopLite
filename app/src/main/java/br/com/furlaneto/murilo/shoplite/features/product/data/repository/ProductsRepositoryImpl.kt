@@ -2,6 +2,7 @@ package br.com.furlaneto.murilo.shoplite.features.product.data.repository
 
 import br.com.furlaneto.murilo.shoplite.features.product.data.api.ProductApi
 import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
+import br.com.furlaneto.murilo.shoplite.features.product.domain.repository.ProductsRepository
 import timber.log.Timber
 import javax.inject.Inject
 

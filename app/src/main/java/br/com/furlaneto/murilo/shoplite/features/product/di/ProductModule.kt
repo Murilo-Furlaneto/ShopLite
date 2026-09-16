@@ -1,7 +1,7 @@
 package br.com.furlaneto.murilo.shoplite.features.product.di
 
-import br.com.furlaneto.murilo.shoplite.features.product.data.repository.ProductsRepository
 import br.com.furlaneto.murilo.shoplite.features.product.data.repository.ProductsRepositoryImpl
+import br.com.furlaneto.murilo.shoplite.features.product.domain.repository.ProductsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

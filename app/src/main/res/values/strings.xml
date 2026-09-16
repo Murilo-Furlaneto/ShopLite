@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">ShopLite</string>
+    <string name="search_placeholder">Buscar produtos...</string>
+    <string name="category_all">Tudo</string>
+    <string name="category_mens_clothing">Moda Masculina</string>
+    <string name="category_jewelery">Joias</string>
+    <string name="category_electronics">Eletrônicos</string>
+    <string name="category_womens_clothing">Moda Feminina</string>
+    <string name="no_products_found">Nenhum produto encontrado.</string>
+    <string name="details_title">Detalhes do Produto</string>
+    <string name="add_to_cart">Adicionar ao Carrinho</string>
+    <string name="description_label">Descrição</string>
+    <string name="reviews_count">(%1$d avaliações)</string>
+    <string name="back_content_description">Voltar</string>
+    <string name="retry_button">Tentar novamente</string>
 </resources>

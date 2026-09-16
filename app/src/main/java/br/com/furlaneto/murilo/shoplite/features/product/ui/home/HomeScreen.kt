@@ -31,9 +31,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import br.com.furlaneto.murilo.shoplite.R
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
 import br.com.furlaneto.murilo.shoplite.features.product.domain.ProductCategory
@@ -84,11 +86,11 @@ fun HomeContent(
             TextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChange,
-                placeholder = { Text(text = "Buscar produtos...") },
+                placeholder = { Text(text = stringResource(R.string.search_placeholder)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Ícone de busca"
+                        contentDescription = stringResource(R.string.search_placeholder)
                     )
                 },
                 modifier = Modifier
@@ -127,7 +129,7 @@ fun HomeContent(
                 is ProductUiState.Success -> {
                     if (uiState.products.isEmpty()) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Text(text = "Nenhum produto encontrado.")
+                            Text(text = stringResource(R.string.no_products_found))
                         }
                     } else {
                         LazyVerticalGrid(
@@ -158,7 +160,7 @@ fun HomeContent(
                         Text(text = uiState.message, color = Color.Red, fontSize = 16.sp)
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = onRetryClick) {
-                            Text("Tentar novamente")
+                            Text(stringResource(R.string.retry_button))
                         }
                     }
                 }

@@ -2,7 +2,7 @@ package br.com.furlaneto.murilo.shoplite.features.product.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.furlaneto.murilo.shoplite.features.product.data.repository.ProductsRepository
+import br.com.furlaneto.murilo.shoplite.features.product.domain.repository.ProductsRepository
 import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
 import br.com.furlaneto.murilo.shoplite.features.product.domain.ProductCategory
 import dagger.hilt.android.lifecycle.HiltViewModel

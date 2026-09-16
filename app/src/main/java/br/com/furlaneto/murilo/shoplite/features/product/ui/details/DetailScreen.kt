@@ -19,10 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import br.com.furlaneto.murilo.shoplite.R
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
 import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
 import coil3.compose.AsyncImage
@@ -41,10 +43,13 @@ fun DetailScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Detalhes do Produto") },
+                title = { Text(stringResource(R.string.details_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back_content_description)
+                        )
                     }
                 }
             )
@@ -69,7 +74,7 @@ fun DetailScreen(
                     Icon(Icons.Default.ShoppingCart, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        "Adicionar ao Carrinho",
+                        stringResource(R.string.add_to_cart),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -115,7 +120,7 @@ fun DetailScreen(
                     color = AppColors.TagBackground
                 ) {
                     Text(
-                        text = product.category.toDisplayName().uppercase(),
+                        text = stringResource(product.category.getDisplayNameResId()).uppercase(),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
@@ -165,7 +170,7 @@ fun DetailScreen(
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        text = "(${product.rating.count} avaliações)",
+                        text = stringResource(R.string.reviews_count, product.rating.count),
                         fontSize = 14.sp,
                         color = AppColors.SecondaryText
                     )
@@ -178,7 +183,7 @@ fun DetailScreen(
                 Spacer(Modifier.height(16.dp))
 
                 Text(
-                    text = "Descrição",
+                    text = stringResource(R.string.description_label),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = AppColors.PrimaryText

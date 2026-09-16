@@ -1,5 +1,6 @@
 package br.com.furlaneto.murilo.shoplite.features.product.domain
 
+import br.com.furlaneto.murilo.shoplite.R
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,12 +18,12 @@ enum class ProductCategory {
     @SerialName("women's clothing")
     WOMENS_CLOTHING;
 
-    fun toDisplayName(): String {
+    fun getDisplayNameResId(): Int {
         return when (this) {
-            MENS_CLOTHING -> "Moda Masculina"
-            JEWELERY -> "Joias"
-            ELECTRONICS -> "Eletrônicos"
-            WOMENS_CLOTHING -> "Moda Feminina"
+            MENS_CLOTHING -> R.string.category_mens_clothing
+            JEWELERY -> R.string.category_jewelery
+            ELECTRONICS -> R.string.category_electronics
+            WOMENS_CLOTHING -> R.string.category_womens_clothing
         }
     }
 }

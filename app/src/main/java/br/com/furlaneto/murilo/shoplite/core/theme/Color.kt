@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.ui.theme
+package br.com.furlaneto.murilo.shoplite.core.theme
 
 import androidx.compose.ui.graphics.Color
 
