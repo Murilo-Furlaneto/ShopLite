@@ -1,5 +1,8 @@
 package br.com.furlaneto.murilo.shoplite.features.product.ui.details
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -30,11 +33,13 @@ import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun DetailScreen(
     product: Product,
     isFavorite: Boolean = false,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     onBackClick: () -> Unit = {},
     onAddToCartClick: (Product) -> Unit = {},
     onNavigateToCart: () -> Unit = {},
@@ -155,10 +160,21 @@ fun DetailScreen(
                     .background(AppColors.BackgroundImage),
                 contentAlignment = Alignment.Center
             ) {
+                val imageModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                    with(sharedTransitionScope) {
+                        Modifier.sharedElement(
+                            rememberSharedContentState(key = "product-image-${product.id}"),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
+                    }
+                } else {
+                    Modifier
+                }
+
                 AsyncImage(
                     model = product.image,
                     contentDescription = product.title,
-                    modifier = Modifier.fillMaxSize(0.8f),
+                    modifier = imageModifier.fillMaxSize(0.8f),
                     contentScale = ContentScale.Fit
                 )
             }

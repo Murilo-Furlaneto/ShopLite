@@ -1,5 +1,8 @@
 package br.com.furlaneto.murilo.shoplite.features.product.ui.home
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,21 +61,24 @@ import br.com.furlaneto.murilo.shoplite.features.product.ui.components.FilterBot
 import br.com.furlaneto.murilo.shoplite.features.product.ui.components.ProductCard
 import br.com.furlaneto.murilo.shoplite.features.whishlist.ui.WishlistViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreen(
     productViewModel: ProductViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
     wishlistViewModel: WishlistViewModel = hiltViewModel(),
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     onProductClick: (Product) -> Unit = {},
     onCartClick: () -> Unit = {},
     onWishlistClick: () -> Unit = {},
-    onProfileClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {}
 ) {
     val uiState by productViewModel.uiState.collectAsState()
     val searchQuery by productViewModel.searchQuery.collectAsState()
     val cartUiState by cartViewModel.uiState.collectAsState()
     val favoriteIds by wishlistViewModel.favoriteIds.collectAsState()
-    val currentFilter by productViewModel.currentFilter.collectAsState()
+
     val totalCartItems = (cartUiState as? CartUiState.Success)?.totalQuantity ?: 0
 
     HomeContent(
@@ -80,6 +86,8 @@ fun HomeScreen(
         searchQuery = searchQuery,
         totalCartItems = totalCartItems,
         favoriteIds = favoriteIds,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
         onProductClick = onProductClick,
         onCartClick = onCartClick,
         onWishlistClick = onWishlistClick,
@@ -87,20 +95,19 @@ fun HomeScreen(
         onToggleFavorite = { wishlistViewModel.onToggleFavorite(it) },
         onCategoryClick = { productViewModel.selectCategory(it) },
         onSearchQueryChange = { productViewModel.onSearchQueryChanged(it) },
-        onRetryClick = { productViewModel.fetchProducts() },
-        appliedFilter = currentFilter,
-        onApplyFilter = { productViewModel.applyFilter(it) },
-        onClearFilter = { productViewModel.clearFilter() }
+        onRetryClick = { productViewModel.fetchProducts() }
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeContent(
     uiState: ProductUiState,
     searchQuery: String,
     totalCartItems: Int,
     favoriteIds: Set<Int>,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     onProductClick: (Product) -> Unit,
     onCartClick: () -> Unit,
     onWishlistClick: () -> Unit,
@@ -108,14 +115,9 @@ fun HomeContent(
     onToggleFavorite: (Int) -> Unit,
     onCategoryClick: (ProductCategory?) -> Unit,
     onSearchQueryChange: (String) -> Unit,
-    onRetryClick: () -> Unit,
-    appliedFilter: ProductFilter? = null,
-    onApplyFilter: (ProductFilter) -> Unit,
-    onClearFilter: () -> Unit
+    onRetryClick: () -> Unit
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
-    val activeFilter = appliedFilter ?: ProductFilter()
-    var draftFilter by remember(showBottomSheet, activeFilter) { mutableStateOf(activeFilter) }
 
     Scaffold(
         topBar = {
@@ -206,7 +208,6 @@ fun HomeContent(
 
                 IconButton(
                     onClick = {
-                        draftFilter = activeFilter
                         showBottomSheet = true
                     }
                 ) {
@@ -219,14 +220,12 @@ fun HomeContent(
 
             if (showBottomSheet) {
                 FilterBottomSheet(
-                    currentFilter = draftFilter,
+                    currentFilter = ProductFilter(),
                     onDismissRequest = { showBottomSheet = false },
-                    onApplyFilter = { newFilter ->
-                        onApplyFilter(newFilter)
+                    onApplyFilter = { _ ->
                         showBottomSheet = false
                     },
                     onClearFilter = {
-                        onClearFilter()
                         showBottomSheet = false
                     }
                 )
@@ -266,6 +265,8 @@ fun HomeContent(
                                 ProductCard(
                                     product = product,
                                     isFavorite = favoriteIds.contains(product.id),
+                                    sharedTransitionScope = sharedTransitionScope,
+                                    animatedVisibilityScope = animatedVisibilityScope,
                                     onToggleFavorite = { onToggleFavorite(product.id) },
                                     modifier = Modifier.padding(8.dp),
                                     onClick = { onProductClick(product) }
