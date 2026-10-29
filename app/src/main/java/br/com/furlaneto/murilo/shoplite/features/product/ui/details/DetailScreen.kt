@@ -1,8 +1,5 @@
 package br.com.furlaneto.murilo.shoplite.features.product.ui.details
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,11 +7,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,22 +23,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import br.com.furlaneto.murilo.shoplite.R
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
-import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
+import br.com.furlaneto.murilo.shoplite.features.product.domain.entity.Product
 import coil3.compose.AsyncImage
+import kotlinx.coroutines.launch
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     product: Product,
-    sharedTransitionScope: SharedTransitionScope,
+    isFavorite: Boolean = false,
     onBackClick: () -> Unit = {},
-    onAddToCartClick: (Product) -> Unit = {}
+    onAddToCartClick: (Product) -> Unit = {},
+    onNavigateToCart: () -> Unit = {},
+    onToggleFavorite: (Product) -> Unit = {}
 ) {
-    val animatedVisibilityScope = LocalNavAnimatedContentScope.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val productAddedMessage = stringResource(R.string.product_added_to_cart)
+    val viewCartActionLabel = stringResource(R.string.view_cart)
 
     Scaffold(
         topBar = {
@@ -51,8 +56,49 @@ fun DetailScreen(
                             contentDescription = stringResource(R.string.back_content_description)
                         )
                     }
+                },
+                actions = {
+                    IconButton(onClick = { onToggleFavorite(product) }) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = "Favoritar produto",
+                            tint = if (isFavorite) Color.Red else AppColors.SecondaryText
+                        )
+                    }
                 }
             )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(16.dp)
+            ) { data ->
+                Snackbar(
+                    containerColor = AppColors.White,
+                    contentColor = AppColors.PrimaryText,
+                    shape = RoundedCornerShape(12.dp),
+                    action = {
+                        data.visuals.actionLabel?.let { actionLabel ->
+                            TextButton(
+                                onClick = { data.performAction() }
+                            ) {
+                                Text(
+                                    text = actionLabel,
+                                    color = AppColors.Primary,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp
+                                )
+                            }
+                        }
+                    }
+                ) {
+                    Text(
+                        text = data.visuals.message,
+                        color = AppColors.PrimaryText,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
         },
         bottomBar = {
             Surface(
@@ -61,9 +107,23 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.surface
             ) {
                 Button(
-                    onClick = { onAddToCartClick(product) },
+                    onClick = {
+                        onAddToCartClick(product)
+                        coroutineScope.launch {
+                            snackbarHostState.currentSnackbarData?.dismiss()
+                            val result = snackbarHostState.showSnackbar(
+                                message = productAddedMessage,
+                                actionLabel = viewCartActionLabel,
+                                duration = SnackbarDuration.Short
+                            )
+                            if (result == SnackbarResult.ActionPerformed) {
+                                onNavigateToCart()
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
+                        .navigationBarsPadding()
                         .padding(16.dp)
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
@@ -95,19 +155,12 @@ fun DetailScreen(
                     .background(AppColors.BackgroundImage),
                 contentAlignment = Alignment.Center
             ) {
-                with(sharedTransitionScope) {
-                    AsyncImage(
-                        model = product.image,
-                        contentDescription = product.title,
-                        modifier = Modifier
-                            .sharedElement(
-                                sharedContentState = rememberSharedContentState(key = "image-${product.id}"),
-                                animatedVisibilityScope = animatedVisibilityScope
-                            )
-                            .fillMaxSize(0.8f),
-                        contentScale = ContentScale.Fit
-                    )
-                }
+                AsyncImage(
+                    model = product.image,
+                    contentDescription = product.title,
+                    modifier = Modifier.fillMaxSize(0.8f),
+                    contentScale = ContentScale.Fit
+                )
             }
 
             Column(
@@ -140,7 +193,7 @@ fun DetailScreen(
                 Spacer(Modifier.height(8.dp))
 
                 val formattedPrice = remember(product.price) {
-                    String.format(Locale("pt", "BR"), "R$ %.2f", product.price)
+                    String.format(Locale.getDefault(), "R$ %.2f", product.price)
                 }
 
                 Text(

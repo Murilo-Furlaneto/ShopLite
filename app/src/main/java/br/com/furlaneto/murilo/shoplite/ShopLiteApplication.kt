@@ -2,6 +2,7 @@ package br.com.furlaneto.murilo.shoplite
 
 import android.app.Application
 import br.com.furlaneto.murilo.shoplite.BuildConfig
+import br.com.furlaneto.murilo.shoplite.core.helper.NotificationHelper
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -15,6 +16,9 @@ class ShopLiteApplication : Application() {
         } else {
             Timber.plant(ReleaseTree())
         }
+
+        // Inicializa o canal de notificações para o Android 8.0+
+        NotificationHelper.createNotificationChannel(this)
     }
 
     /**

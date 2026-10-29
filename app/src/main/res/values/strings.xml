@@ -13,4 +13,16 @@
     <string name="reviews_count">(%1$d avaliações)</string>
     <string name="back_content_description">Voltar</string>
     <string name="retry_button">Tentar novamente</string>
+    <string name="cart_title">Meu Carrinho</string>
+    <string name="cart_empty_title">Seu carrinho está vazio</string>
+    <string name="cart_empty_subtitle">Que tal adicionar alguns produtos?</string>
+    <string name="cart_explore_products">Explorar Produtos</string>
+    <string name="cart_clear_all">Esvaziar</string>
+    <string name="cart_total">Total</string>
+    <string name="cart_checkout">Finalizar Compra</string>
+    <string name="cart_order_completed">Pedido finalizado com sucesso!</string>
+    <string name="product_added_to_cart">Produto adicionado ao carrinho!</string>
+    <string name="view_cart">Ver carrinho</string>
+    <string name="profile_title">Meu Perfil</string>
+    <string name="filter_title">Filtros</string>
 </resources>

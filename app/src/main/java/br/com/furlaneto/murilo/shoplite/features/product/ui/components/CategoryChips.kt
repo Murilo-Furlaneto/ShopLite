@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.com.furlaneto.murilo.shoplite.R
 import br.com.furlaneto.murilo.shoplite.core.colors.AppColors
-import br.com.furlaneto.murilo.shoplite.features.product.domain.ProductCategory
+import br.com.furlaneto.murilo.shoplite.features.product.domain.entity.ProductCategory
 
 @Composable
 fun CategoryChips(

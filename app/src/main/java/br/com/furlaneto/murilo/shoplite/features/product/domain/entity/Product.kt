@@ -1,4 +1,4 @@
-package br.com.furlaneto.murilo.shoplite.features.product.domain
+package br.com.furlaneto.murilo.shoplite.features.product.domain.entity
 
 import br.com.furlaneto.murilo.shoplite.R
 import kotlinx.serialization.SerialName
@@ -37,7 +37,9 @@ data class Product(
     val category: ProductCategory,
     val image: String,
     val rating: Rating
-)
+){
+
+}
 
 @Serializable
 data class Rating(

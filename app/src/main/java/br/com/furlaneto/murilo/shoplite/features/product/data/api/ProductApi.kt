@@ -1,6 +1,6 @@
 package br.com.furlaneto.murilo.shoplite.features.product.data.api
 
-import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
+import br.com.furlaneto.murilo.shoplite.features.product.domain.entity.Product
 import retrofit2.http.GET
 
 interface ProductApi {

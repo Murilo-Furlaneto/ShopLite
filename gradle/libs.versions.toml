@@ -1,7 +1,8 @@
 [versions]
-agp = "9.1.1"
+agp = "9.3.3"
 coilCompose = "3.0.0-rc01"
 coilNetworkOkhttp = "3.0.0-rc01"
+datastorePreferences = "1.2.1"
 hiltAndroid = "2.60.1"
 kotlin = "2.4.10"
 ksp = "2.3.10"
@@ -19,14 +20,20 @@ navigation3 = "1.1.7"
 hiltNavigationCompose = "1.2.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
+room3 = "3.0.3"
 timber = "5.0.1"
 
 [libraries]
+androidx-compose-animation = { module = "androidx.compose.animation:animation" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewModelNavigation3" }
+androidx-room3-compiler = { module = "androidx.room3:room3-compiler", version.ref = "room3" }
+androidx-room3-runtime = { module = "androidx.room3:room3-runtime", version.ref = "room3" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }

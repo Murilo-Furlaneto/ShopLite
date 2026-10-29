@@ -1,22 +1,34 @@
 package br.com.furlaneto.murilo.shoplite.navigation
 
 import androidx.navigation3.runtime.NavKey
-import br.com.furlaneto.murilo.shoplite.features.product.domain.Product
+import br.com.furlaneto.murilo.shoplite.features.product.domain.entity.Product
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed interface AppRoute : NavKey
 
 @Serializable
-object HomeRoute : AppRoute
+data object HomeRoute : AppRoute
 
 @Serializable
-object CartRoute : AppRoute
+data object CartRoute : AppRoute
 
 @Serializable
-object ProfileRoute : AppRoute
+data object WishlistRoute : AppRoute
+
+@Serializable
+data object ProfileRoute : AppRoute
 
 @Serializable
 data class DetailsRoute(
     val product: Product
+) : AppRoute
+
+@Serializable
+data object CheckoutRoute : AppRoute
+
+@Serializable
+data class OrderSuccessRoute(
+    val orderId: String,
+    val totalAmount: Double
 ) : AppRoute
